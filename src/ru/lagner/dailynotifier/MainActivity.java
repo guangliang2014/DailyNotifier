@@ -1,6 +1,7 @@
 package ru.lagner.dailynotifier;
 
 import java.util.Date;
+import java.util.Timer;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -23,7 +24,14 @@ public class MainActivity extends Activity {
 				
 		context = getApplicationContext();
 		// put now to the last activity time
-		updateLastActivityTime(context);
+		updateLastActivityTime(context);		
+	}
+	
+	@Override
+	protected void onPause()
+	{
+		super.onStop();
+		updateLastActivityTime(getApplicationContext());
 	}
 
 	@Override
@@ -50,6 +58,6 @@ public class MainActivity extends Activity {
 	// Private
 	
 	private Context context;
-	
+	private Timer timer;
 	private static final String logTag = "MainActivity";
 }

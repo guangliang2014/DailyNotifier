@@ -12,7 +12,7 @@
         android:id="@+id/txt_showTime"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:text="@string/hello_world"
+        android:text="@string/uptime"
         android:textSize="40sp" />
 
 </RelativeLayout>
