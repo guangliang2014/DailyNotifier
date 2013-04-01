@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
+        
+        <!-- broadcast listener for change time event -->
+        <receiver android:name="ru.lagner.dailynotifier.TimeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.TIME_SET"/>
+            </intent-filter>            
+        </receiver>    
+	</application>
 
 </manifest>
