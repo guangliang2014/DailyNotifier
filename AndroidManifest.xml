@@ -29,7 +29,12 @@
                 <action android:name="android.intent.action.DATE_CHANGED" />
                 <action android:name="android.intent.action.TIME_SET"/>
             </intent-filter>            
-        </receiver>    
+        </receiver>
+        <receiver android:name="ru.lagner.dailynotifier.AlarmReceiver">
+            <intent-filter>
+                <action android:name="ru.lagner.dailynotify"/>                 
+            </intent-filter>
+        </receiver>r
 	</application>
 
 </manifest>

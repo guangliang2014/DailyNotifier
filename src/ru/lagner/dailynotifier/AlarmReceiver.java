@@ -5,15 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-public class TimeReceiver extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 		
-		Log.i(logTag, "global time was changed -> reset last activity time");		
-		MainActivity.updateLastActivityTime(context);		
+		// вызвать активити и добавить дневную ману
+		
+		Log.i(logTag, "timer tick");
 	}
 	
-	private final static String logTag = "TimeReceiver";
+	private static final String logTag = "AlarmReceiver";
 }

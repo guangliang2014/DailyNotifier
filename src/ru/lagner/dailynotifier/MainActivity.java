@@ -1,11 +1,13 @@
 package ru.lagner.dailynotifier;
 
+import java.util.Calendar;
 import java.util.Date;
-import java.util.Timer;
-
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
@@ -15,6 +17,8 @@ public class MainActivity extends Activity {
 	
 	public static final String SETTINGS = "appSettings";
 	public static final String LAST_ACTIVITY = "lastactivity";
+	public static final String POINTS = "totalPoints";
+	public static final String FIRST_TIME = "isFirstTime";
 	
 
 	@Override
@@ -24,7 +28,13 @@ public class MainActivity extends Activity {
 				
 		context = getApplicationContext();
 		// put now to the last activity time
-		updateLastActivityTime(context);		
+		updateLastActivityTime(context);
+				
+		if (checkIfItFirst())
+		{
+			Log.i(logTag, "First app start. Set daily notifier");
+			setDailyAlarm();
+		}
 	}
 	
 	@Override
@@ -54,10 +64,36 @@ public class MainActivity extends Activity {
 		Log.i(logTag, "Last activity time was updated to " + now.toString());
 	}
 	
+	private boolean checkIfItFirst()
+	{
+		SharedPreferences pref = getPreferences(MODE_PRIVATE);
+		// Check if it first start of program
+		if (!pref.contains(FIRST_TIME))
+		{			
+			Editor editor = pref.edit();
+			editor.putBoolean(FIRST_TIME, false);
+			editor.commit();
+			return true;
+		}		
+		return false;
+	}
+	
+	private void setDailyAlarm()
+	{
+		Intent intent = new Intent("ru.lagner.dailynotify");
+		PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+				
+		AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), interval, pIntent);		
+	}
+	
+	
 	
 	// Private
 	
 	private Context context;
-	private Timer timer;
+	private Calendar calendar = Calendar.getInstance();
+	// notify interval in miliseconds
+	private long interval = 30*1000;
 	private static final String logTag = "MainActivity";
 }
