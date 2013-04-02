@@ -64,7 +64,7 @@ public class MainActivity extends Activity {
 		switch(value)
 		{
 		case (R.id.reset_timer):
-			resetLastActivityAndAlarm();
+			resetAll();
 			return true;			
 		}
 		
@@ -81,12 +81,12 @@ public class MainActivity extends Activity {
 		editor.putLong(LAST_ACTIVITY, now.getTime());
 		editor.commit();
 		
-		Log.i(logTag, "Last activity time was updated to " + now.toString());
+		Log.i(logTag, "last activity time was updated to " + now.toString());
 	}
 	
 	public static void resetDailyAlarm(Context context)
 	{
-		Log.i(logTag, "Reset daily alarm");
+		Log.i(logTag, "reset daily alarm");
 		
 		Intent intent = new Intent(DAILY_NOTIFIER_ID);
 		PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
@@ -98,6 +98,16 @@ public class MainActivity extends Activity {
 		// and setup new. Start time now
 		Calendar calendar = Calendar.getInstance();		
 		alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), interval, pIntent);
+	}
+	
+	public static void resetPoints(Context context)
+	{
+		Log.i(logTag, "reset points to 0");
+		SharedPreferences pref = context.getSharedPreferences(SETTINGS, MODE_PRIVATE);
+		
+		Editor e = pref.edit();
+		e.putInt(POINTS, 0);
+		e.commit();
 	}
 	
 	/// if last activity was earler then interval,
@@ -124,9 +134,7 @@ public class MainActivity extends Activity {
 		}
 		
 		return false;
-	}
-	
-	
+	}	
 	
 	public static int increasePoints(Context context)
 	{		
@@ -155,11 +163,12 @@ public class MainActivity extends Activity {
 		return false;
 	}
 	
-	private void resetLastActivityAndAlarm()
+	private void resetAll()
 	{
 		Log.i(logTag, "Reset all timers");	
 		updateLastActivityTime(context);
 		resetDailyAlarm(context);
+		resetPoints(context);
 	}
 	
 	
