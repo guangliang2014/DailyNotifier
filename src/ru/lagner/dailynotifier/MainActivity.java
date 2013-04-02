@@ -13,6 +13,7 @@ import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
@@ -27,6 +28,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		txt_lastActivity = (TextView)findViewById(R.id.txt_showTime);
 				
 		context = getApplicationContext();
 		// put now to the last activity time
@@ -37,7 +40,17 @@ public class MainActivity extends Activity {
 			Log.i(logTag, "First app start. Set daily notifier");
 			resetDailyAlarm(context);
 		}
+		
+		updateTextView();
 	}
+	
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		updateTextView();
+	}
+	
 	
 	@Override
 	protected void onPause()
@@ -169,12 +182,24 @@ public class MainActivity extends Activity {
 		updateLastActivityTime(context);
 		resetDailyAlarm(context);
 		resetPoints(context);
+		updateTextView();
+	}
+	
+	private void updateTextView()
+	{
+		SharedPreferences pref = context.getSharedPreferences(SETTINGS, MODE_PRIVATE);
+		
+		long value = pref.getLong(LAST_ACTIVITY, 0);		
+		Date date = new Date(value);
+		
+		txt_lastActivity.setText(date.toString());
 	}
 	
 	
 	
 	// Private
 	
+	private TextView txt_lastActivity;
 	private Context context;
 	// notify interval in miliseconds
 	private static final long interval = 3*60*1000;
