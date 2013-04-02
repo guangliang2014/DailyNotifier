@@ -19,6 +19,7 @@ public class MainActivity extends Activity {
 	public static final String LAST_ACTIVITY = "lastactivity";
 	public static final String POINTS = "totalPoints";
 	public static final String FIRST_TIME = "isFirstTime";
+	public static final String DAILY_NOTIFIER_ID = "ru.lagner.dailynotifier";
 	
 
 	@Override
@@ -33,7 +34,7 @@ public class MainActivity extends Activity {
 		if (checkIfItFirst())
 		{
 			Log.i(logTag, "First app start. Set daily notifier");
-			setDailyAlarm();
+			resetDailyAlarm(context);
 		}
 	}
 	
@@ -64,6 +65,22 @@ public class MainActivity extends Activity {
 		Log.i(logTag, "Last activity time was updated to " + now.toString());
 	}
 	
+	public static void resetDailyAlarm(Context context)
+	{
+		Log.i(logTag, "Reset daily alarm");
+		
+		Intent intent = new Intent(DAILY_NOTIFIER_ID);
+		PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+
+		AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		// cancel previous alarm
+		alarm.cancel(pIntent);
+		
+		// and setup new. Start time now
+		Calendar calendar = Calendar.getInstance();		
+		alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), interval, pIntent);
+	}
+	
 	private boolean checkIfItFirst()
 	{
 		SharedPreferences pref = getPreferences(MODE_PRIVATE);
@@ -78,22 +95,13 @@ public class MainActivity extends Activity {
 		return false;
 	}
 	
-	private void setDailyAlarm()
-	{
-		Intent intent = new Intent("ru.lagner.dailynotify");
-		PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-				
-		AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), interval, pIntent);		
-	}
 	
 	
 	
 	// Private
 	
 	private Context context;
-	private Calendar calendar = Calendar.getInstance();
 	// notify interval in miliseconds
-	private long interval = 30*1000;
+	private static final long interval = 30*1000;
 	private static final String logTag = "MainActivity";
 }

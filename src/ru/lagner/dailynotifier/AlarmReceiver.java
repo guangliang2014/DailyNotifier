@@ -13,7 +13,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 		
 		// вызвать активити и добавить дневную ману
 		
-		Log.i(logTag, "timer tick");
+		Log.i(logTag, "timer tick. Start activity to increase mana");
+		
 	}
 	
 	private static final String logTag = "AlarmReceiver";

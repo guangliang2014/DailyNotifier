@@ -32,7 +32,7 @@
         </receiver>
         <receiver android:name="ru.lagner.dailynotifier.AlarmReceiver">
             <intent-filter>
-                <action android:name="ru.lagner.dailynotify"/>                 
+                <action android:name="ru.lagner.dailynotifier"/>                 
             </intent-filter>
         </receiver>r
 	</application>

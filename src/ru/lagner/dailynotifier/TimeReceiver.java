@@ -12,7 +12,9 @@ public class TimeReceiver extends BroadcastReceiver {
 		// TODO Auto-generated method stub
 		
 		Log.i(logTag, "global time was changed -> reset last activity time");		
-		MainActivity.updateLastActivityTime(context);		
+		
+		MainActivity.updateLastActivityTime(context);
+		MainActivity.resetDailyAlarm(context);
 	}
 	
 	private final static String logTag = "TimeReceiver";
