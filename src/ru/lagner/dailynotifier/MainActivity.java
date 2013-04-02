@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onPause()
 	{
-		super.onStop();
+		super.onPause();
 		updateLastActivityTime(getApplicationContext());
 	}
 
@@ -102,6 +102,6 @@ public class MainActivity extends Activity {
 	
 	private Context context;
 	// notify interval in miliseconds
-	private static final long interval = 30*1000;
+	private static final long interval = 3*60*1000;
 	private static final String logTag = "MainActivity";
 }
