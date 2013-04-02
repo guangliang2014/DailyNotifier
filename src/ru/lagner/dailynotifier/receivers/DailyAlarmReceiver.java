@@ -7,6 +7,7 @@ import ru.lagner.dailynotifier.SettingsProvider;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class DailyAlarmReceiver extends BroadcastReceiver {
 
@@ -19,11 +20,15 @@ public class DailyAlarmReceiver extends BroadcastReceiver {
 		long delta = now.getTime() - SettingsProvider.getLastActivityTime(context);
 		
 		if (delta < SettingsProvider.PERIOD) {
-			// начисляем бонусные баллы
-			// уведомляем об этом
+			Log.i(logTag, "add bonus points");
+			// РЅР°С‡РёСЃР»РёС‚СЊ Р±РѕРЅСѓСЃРЅС‹Рµ Р±Р°Р»С‹ 
+			// СѓРІРµРґРѕРјРёС‚СЊ РѕР± СЌС‚РѕРј
 		} else {
-			// уведомляем о том, что пользователь свои баллы просохатил
+			Log.i(logTag, "bonus points are losted");
+			// РїСЂРѕСЃРѕС…Р°С‚РёР» Р±Р°Р»С‹
+			// СѓРІРµРґРѕРјРёС‚СЊ РѕР± СЌС‚РѕРј
 		}
 	}
 
+	private static final String logTag = DailyAlarmReceiver.class.getSimpleName();
 }

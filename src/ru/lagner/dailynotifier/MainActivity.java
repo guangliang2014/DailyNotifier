@@ -5,11 +5,14 @@ import java.util.Date;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -149,8 +152,7 @@ public class MainActivity extends Activity {
 		return false;
 	}	
 	
-	public static int increasePoints(Context context)
-	{		
+	public static int increasePoints(Context context) {		
 		SharedPreferences pref = context.getSharedPreferences(SETTINGS, MODE_PRIVATE);
 		int points = pref.getInt(POINTS, 0);
 		points += profit;
@@ -161,6 +163,30 @@ public class MainActivity extends Activity {
 		
 		return points;
 	}
+	
+	
+	public static void notifyUser(Context context, String message) {
+		
+		String title = context.getResources().getString(R.string.app_name);
+		
+		Intent intent = new Intent(context, MainActivity.class);
+		
+		NotificationManager mn = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+			.setSmallIcon(R.drawable.ic_launcher)
+			.setAutoCancel(true)
+			.setTicker(message)
+			.setContentText(message)
+			.setContentIntent(PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT))
+			.setWhen(System.currentTimeMillis())
+			.setContentTitle(title)
+			.setDefaults(Notification.DEFAULT_ALL);
+			
+		Notification notif = builder.getNotification();
+		mn.notify(0, notif);		
+	}
+	
 	
 	private boolean checkIfItFirst()
 	{
@@ -204,5 +230,5 @@ public class MainActivity extends Activity {
 	// notify interval in miliseconds
 	private static final long interval = 3*60*1000;
 	private static final int profit = 100;
-	private static final String logTag = "MainActivity";
+	private static final String logTag = MainActivity.class.getSimpleName();
 }

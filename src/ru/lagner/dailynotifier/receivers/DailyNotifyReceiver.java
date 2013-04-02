@@ -1,33 +1,30 @@
 package ru.lagner.dailynotifier.receivers;
 
 import java.util.Date;
-
 import ru.lagner.dailynotifier.SettingsProvider;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class DailyNotifyReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
-
-		// проверять заходил ли пользователь последние 23 часа
-		// если нет уведомлять, что у него остался час
-		// иначе никакого дневного бонуса	
 		
 		Date now = new Date();
 		long delta = now.getTime() - SettingsProvider.getLastActivityTime(context);
 		float norma = SettingsProvider.PERIOD * SettingsProvider.NOTIFY_FACTOR;
 		
 		if (!(delta < norma)) {
-			
-			// уведомляем пользователя что если не зайдет то ничего не получит
+			Log.i(logTag, "notify user about remaining time");			
+			// СѓРІРµРґРѕРјРёС‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ С‡С‚Рѕ Сѓ РЅРµРіРѕ РјР°Р»Рѕ РІСЂРµРјРµРЅРё
+			// РЅСѓР¶РЅРѕ Р·Р°Р№С‚Рё С‡С‚РѕР±С‹ РїРѕР»СѓС‡РёС‚СЊ Р±РѕРЅСѓСЃ
+
 		} 	
 	}
 	
 	
-	private static final String logTag = "receivers.DailyNotifyReceiver";
+	private static final String logTag = DailyNotifyReceiver.class.getSimpleName();
 }

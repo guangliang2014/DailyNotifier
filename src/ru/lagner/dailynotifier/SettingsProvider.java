@@ -46,5 +46,22 @@ public abstract class SettingsProvider {
 	}
 	
 	
-	private static final String logTag = "Global SettingsProvider";
+	
+	public static int getPoints(Context context) {
+		SharedPreferences pref = context.getSharedPreferences(SETTINGS, Context.MODE_PRIVATE);
+		
+		return pref.getInt(POINTS, 0);		
+	}
+	
+	public static void setPoints(Context context, int value) {
+		SharedPreferences pref = context.getSharedPreferences(SETTINGS, Context.MODE_PRIVATE);
+		
+		Editor e = pref.edit();
+		e.putInt(POINTS, value);
+		e.commit();
+	}
+	
+	
+	
+	private static final String logTag = SettingsProvider.class.getSimpleName();
 }
