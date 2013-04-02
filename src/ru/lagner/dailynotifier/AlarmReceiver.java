@@ -10,11 +10,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
+						
+		// check last activity not implemented
 		
-		// вызвать активити и добавить дневную ману
-		
-		Log.i(logTag, "timer tick. Start activity to increase mana");
-		
+		int points = MainActivity.increasePoints(context);
+		Log.i(logTag, "Timer tick. Increase points to " + points);
 	}
 	
 	private static final String logTag = "AlarmReceiver";

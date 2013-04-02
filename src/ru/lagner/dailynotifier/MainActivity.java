@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 public class MainActivity extends Activity {
 	
@@ -52,6 +53,24 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	@Override 
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		super.onOptionsItemSelected(item);
+		
+		int value = item.getItemId();
+		Log.i(logTag, "Options item selected: " + value);
+		
+		switch(value)
+		{
+		case (R.id.reset_timer):
+			resetLastActivityAndAlarm();
+			return true;			
+		}
+		
+		return false;
+	}
+	
 	
 	public static void updateLastActivityTime(Context context)
 	{
@@ -81,6 +100,19 @@ public class MainActivity extends Activity {
 		alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), interval, pIntent);
 	}
 	
+	public static int increasePoints(Context context)
+	{
+		Log.i(logTag, "increase user points");
+		
+		SharedPreferences pref = context.getSharedPreferences(SETTINGS, MODE_PRIVATE);
+		int points = pref.getInt(POINTS, 0);
+		points += profit;
+		Editor editor = pref.edit();
+		editor.putInt(POINTS, points);
+		editor.commit();
+		return points;
+	}
+	
 	private boolean checkIfItFirst()
 	{
 		SharedPreferences pref = getPreferences(MODE_PRIVATE);
@@ -95,6 +127,12 @@ public class MainActivity extends Activity {
 		return false;
 	}
 	
+	private void resetLastActivityAndAlarm()
+	{
+		Log.i(logTag, "Reset all timers");	
+		updateLastActivityTime(context);
+		resetDailyAlarm(context);
+	}
 	
 	
 	
@@ -102,6 +140,7 @@ public class MainActivity extends Activity {
 	
 	private Context context;
 	// notify interval in miliseconds
-	private static final long interval = 3*60*1000;
+	private static final long interval = 60*1000;
+	private static final int profit = 100;
 	private static final String logTag = "MainActivity";
 }

@@ -24,15 +24,15 @@
         </activity>
         
         <!-- broadcast listener for change time event -->
-        <receiver android:name="ru.lagner.dailynotifier.TimeReceiver">
+        <receiver android:name=".TimeReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.DATE_CHANGED" />
                 <action android:name="android.intent.action.TIME_SET"/>
             </intent-filter>            
         </receiver>
-        <receiver android:name="ru.lagner.dailynotifier.AlarmReceiver">
-            <intent-filter>
-                <action android:name="ru.lagner.dailynotifier"/>                 
+        <receiver android:name=".AlarmReceiver">
+            <intent-filter>  
+                <action android:name="ru.lagner.dailynotifier"/>             
             </intent-filter>
         </receiver>r
 	</application>
