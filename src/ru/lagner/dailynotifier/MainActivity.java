@@ -100,16 +100,44 @@ public class MainActivity extends Activity {
 		alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), interval, pIntent);
 	}
 	
-	public static int increasePoints(Context context)
+	/// if last activity was earler then interval,
+	/// returns false, 
+	/// otherwise returns true
+	public static boolean checkLastActivity(Context context)
 	{
-		Log.i(logTag, "increase user points");
+		Log.i(logTag, "check last activity");
 		
+		SharedPreferences pref = context.getSharedPreferences(SETTINGS, MODE_PRIVATE);
+		
+		if (!pref.contains(LAST_ACTIVITY))
+		{
+			updateLastActivityTime(context);
+			return false;
+		}
+		
+		long last = pref.getLong(LAST_ACTIVITY, 0);
+		Date now = new Date();
+		
+		if ((now.getTime() - last) < interval)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	
+	public static int increasePoints(Context context)
+	{		
 		SharedPreferences pref = context.getSharedPreferences(SETTINGS, MODE_PRIVATE);
 		int points = pref.getInt(POINTS, 0);
 		points += profit;
+		
 		Editor editor = pref.edit();
 		editor.putInt(POINTS, points);
 		editor.commit();
+		
 		return points;
 	}
 	
@@ -140,7 +168,7 @@ public class MainActivity extends Activity {
 	
 	private Context context;
 	// notify interval in miliseconds
-	private static final long interval = 60*1000;
+	private static final long interval = 3*60*1000;
 	private static final int profit = 100;
 	private static final String logTag = "MainActivity";
 }

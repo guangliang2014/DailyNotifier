@@ -11,10 +11,16 @@ public class AlarmReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 						
-		// check last activity not implemented
-		
-		int points = MainActivity.increasePoints(context);
-		Log.i(logTag, "Timer tick. Increase points to " + points);
+
+		if (MainActivity.checkLastActivity(context))
+		{
+			int points = MainActivity.increasePoints(context);
+			Log.i(logTag, "Increase points to " + points);
+		}
+		else
+		{
+			Log.i(logTag, "Long time inactive. No bonus points");
+		}		
 	}
 	
 	private static final String logTag = "AlarmReceiver";
