@@ -1,6 +1,9 @@
 package ru.lagner.dailynotifier.receivers;
 
 import java.util.Date;
+
+import ru.lagner.dailynotifier.MainActivity;
+import ru.lagner.dailynotifier.R;
 import ru.lagner.dailynotifier.SettingsProvider;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,7 +14,6 @@ public class DailyNotifyReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		// TODO Auto-generated method stub
 		
 		Date now = new Date();
 		long delta = now.getTime() - SettingsProvider.getLastActivityTime(context);
@@ -19,9 +21,8 @@ public class DailyNotifyReceiver extends BroadcastReceiver {
 		
 		if (!(delta < norma)) {
 			Log.i(logTag, "notify user about remaining time");			
-			// уведомить пользователя что у него мало времени
-			// нужно зайти чтобы получить бонус
-
+			String message = context.getResources().getString(R.string.dont_lose_bonus);
+			MainActivity.notifyUser(context, message);
 		} 	
 	}
 	

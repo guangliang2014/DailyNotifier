@@ -6,5 +6,10 @@
     <string name="uptime">hh:mm:ss</string>
     <string name="reset">Reset all</string>
     <string name="last_activity"><b>Last activity:</b></string>
+    <string name="dont_lose_bonus">You should launch the game if you want to get bonus points</string>
+    <string name="you_got_bonus">You have got bonus points</string>
+    <string name="you_didnt_get_points">You was inactive last time and lost bonus points</string>
+    <string name="total_points">Total points:  </string>
+    <string name="undefined">undefined</string>
 
 </resources>

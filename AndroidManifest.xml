@@ -8,11 +8,15 @@
         android:minSdkVersion="9"
         android:targetSdkVersion="17" />
 
+    <permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
         <activity
             android:name="ru.lagner.dailynotifier.MainActivity"
             android:label="@string/app_name" >
@@ -23,18 +27,30 @@
             </intent-filter>
         </activity>
         
-        <!-- broadcast listener for change time event -->
-        <receiver android:name=".TimeReceiver">
+        <!-- handle the date if it was changed manually -->
+        <receiver android:name="ru.lagner.dailynotifier.receivers.TimeChangedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.DATE_CHANGED" />
                 <action android:name="android.intent.action.TIME_SET"/>
             </intent-filter>            
         </receiver>
-        <receiver android:name=".AlarmReceiver">
+        <!-- increase total points if user was active -->
+        <receiver 
+            android:name="ru.lagner.dailynotifier.receivers.DailyAlarmReceiver"
+            android:exported="false">"
             <intent-filter>  
-                <action android:name="ru.lagner.dailynotifier"/>             
+                <action android:name="ru.lagner.dailynotifier.update"/>             
             </intent-filter>
-        </receiver>r
+        </receiver>
+        <!-- notify if user have to launch the game to get the bonus -->
+        <receiver
+            android:name="ru.lagner.dailynotifier.receivers.DailyNotifyReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="ru.lagner.dailynotifier.notify" />
+            </intent-filter>
+            
+        </receiver>
 	</application>
 
 </manifest>
