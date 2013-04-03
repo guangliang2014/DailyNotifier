@@ -1,6 +1,7 @@
 package ru.lagner.dailynotifier.receivers;
 
 import ru.lagner.dailynotifier.MainActivity;
+import ru.lagner.dailynotifier.Scheduler;
 import ru.lagner.dailynotifier.SettingsProvider;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,7 +17,9 @@ public class TimeChangedReceiver extends BroadcastReceiver {
 		// change last activity time to now
 		SettingsProvider.setLastActivityTime(context);
 		// reset scheduler
-		MainActivity.resetDailyAlarm(context);
+		Scheduler sch = new Scheduler(context);
+		// assume that it already running
+		sch.restart();		
 		// next tick will in period time
 	}
 	
