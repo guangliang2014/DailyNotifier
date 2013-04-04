@@ -1,6 +1,5 @@
 package ru.lagner.dailynotifier.receivers;
 
-import ru.lagner.dailynotifier.MainActivity;
 import ru.lagner.dailynotifier.Scheduler;
 import ru.lagner.dailynotifier.SettingsProvider;
 import android.content.BroadcastReceiver;

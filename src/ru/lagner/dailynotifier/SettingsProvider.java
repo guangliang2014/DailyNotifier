@@ -14,13 +14,9 @@ public abstract class SettingsProvider {
 	public static final int BONUS_POINTS = 100;
 	
 	public static final String LAST_ACTIVITY = "LastActivityTime";
+
 	
-	// period for bonus points. In mili seconds
-	public static final long PERIOD = 2*60*1000;
-	public static final float NOTIFY_FACTOR = 0.9f;
 	
-	public static final String NOTIFIER_UPDATE_ID = "ru.lagner.dailynotifier.update";
-	public static final String NOTIFIER_NOTIFY_ID = "ru.lagner.dailynotifier.notify";
 	
 	public static final String IS_FIRST_TIME = "isFirstTime";
 	

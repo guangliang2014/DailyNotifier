@@ -4,7 +4,6 @@ import java.util.Date;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -31,19 +31,22 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 				
 		context = getApplicationContext();
+		sch = new Scheduler(context);
 		
 		SettingsProvider.setLastActivityTime(context);
 		
-		if (SettingsProvider.isFirstTime(context))
-			resetDailyAlarm(context);			
+		if (SettingsProvider.isFirstTime(context)) {
+			sch.start();
+		}
 		
-		txt_lastActivity = (TextView) findViewById(R.id.txt_showTime);
-		Date lastActivity = new Date(SettingsProvider.getLastActivityTime(context));
-		txt_lastActivity.setText(lastActivity.toString());
+		txt_lastActivity = (TextView) findViewById(R.id.txt_lastActivity);
+		txt_startTime = (TextView) findViewById(R.id.txt_startTime);
+		txt_period = (TextView) findViewById(R.id.txt_period);
+		txt_prenotify = (TextView) findViewById(R.id.txt_preNotify);
+		txt_isEnabled = (TextView) findViewById(R.id.txt_isEnabled);
 		
-		txt_points = (TextView) findViewById(R.id.txt_points);
-		int points = SettingsProvider.getPoints(context);
-		txt_points.setText(String.valueOf(points));
+		btn_start = (Button) findViewById(R.id.btn_start);
+		btn_stop = (Button) findViewById(R.id.btn_stop);
 	}
 	
 	@Override
@@ -60,33 +63,6 @@ public class MainActivity extends Activity {
 		SettingsProvider.setLastActivityTime(context);
 	}
 	
-	
-	public static void resetDailyAlarm(Context context) {
-		Log.i(logTag, "reset daily alarm");
-		
-		String updateId = SettingsProvider.NOTIFIER_UPDATE_ID;
-		String notifyId = SettingsProvider.NOTIFIER_NOTIFY_ID;
-		
-		Intent uIntent = new Intent(updateId);
-		Intent nIntent = new Intent(notifyId);
-				
-		PendingIntent uPendIntent = PendingIntent.getBroadcast(context, 0, uIntent, 0);
-		PendingIntent nPendIntent = PendingIntent.getBroadcast(context, 0, nIntent, 0);
-		
-		AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		// cancel previous alarm
-		alarm.cancel(uPendIntent);
-		alarm.cancel(nPendIntent);
-		
-		// and setup new. Start time now
-		long period = SettingsProvider.PERIOD;
-		// for points update
-		alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + period, period, uPendIntent);
-		
-		// for notify 
-		long trigger = System.currentTimeMillis() + (long)(period * SettingsProvider.NOTIFY_FACTOR);
-		alarm.setRepeating(AlarmManager.RTC_WAKEUP, trigger, period, nPendIntent);
-	}
 
 	public static void notifyUser(Context context, String message) {
 		
@@ -131,7 +107,14 @@ public class MainActivity extends Activity {
 	// Private
 	
 	private Context context;
-	private TextView txt_points;
 	private TextView txt_lastActivity;
+	private TextView txt_startTime;
+	private TextView txt_period;
+	private TextView txt_prenotify;
+	private TextView txt_isEnabled;
+	private Button btn_start;
+	private Button btn_stop;
+	private Scheduler sch;
+	
 	private static final String logTag = MainActivity.class.getSimpleName();
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import ru.lagner.dailynotifier.MainActivity;
 import ru.lagner.dailynotifier.R;
+import ru.lagner.dailynotifier.Scheduler;
 import ru.lagner.dailynotifier.SettingsProvider;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,8 +17,10 @@ public class DailyNotifyReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		
 		Date now = new Date();
+		Scheduler sch = new Scheduler(context);
+		
 		long delta = now.getTime() - SettingsProvider.getLastActivityTime(context);
-		float norma = SettingsProvider.PERIOD * SettingsProvider.NOTIFY_FACTOR;
+		long norma = sch.getPeriod() - sch.getPreNotifyTime();
 		
 		if (!(delta < norma)) {
 			Log.i(logTag, "notify user about remaining time");			

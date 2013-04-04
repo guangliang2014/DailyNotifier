@@ -4,6 +4,7 @@ import java.util.Date;
 
 import ru.lagner.dailynotifier.MainActivity;
 import ru.lagner.dailynotifier.R;
+import ru.lagner.dailynotifier.Scheduler;
 import ru.lagner.dailynotifier.SettingsProvider;
 
 import android.content.BroadcastReceiver;
@@ -17,11 +18,14 @@ public class DailyAlarmReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 
 		Date now = new Date();
+		Scheduler sch = new Scheduler(context);
+		
 		String message;
 		
 		long delta = now.getTime() - SettingsProvider.getLastActivityTime(context);
+		long period = sch.getPeriod();
 		
-		if (delta < SettingsProvider.PERIOD) {
+		if (delta < period) {
 			Log.i(logTag, "add bonus points");
 			
 			int value = SettingsProvider.getPoints(context) + SettingsProvider.BONUS_POINTS;
